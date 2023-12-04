@@ -26,25 +26,30 @@ def calibration_extractor(line_of_text):
     Function receives a line of text and goes through each value in the line from first first
     then will go from the back until a numeric value is identified.
     """
-    first_value = 0
-    second_value = 0
-    counter = -1
-    
-    first_value_found = False
-    second_value_found = False
-    
-    while first_value_found == False:
-        for character in line_of_text:
-            if character.isdigit() == True:
-                first_value_found = int(charcter)
-                first_value_found = True
+    global calibration_values
+    numbers_only = list()
 
-    while second_value_found == False:
-        if character[counter].isdigit() == True:
-            second_value = int(character[counter])
-            second_value_found = True
-        else:
-            counter -= 1
+    # Cycle through the full string and identify all numbers in the order they appear
+    for character in line_of_text:
+        if character.isdigit() == True:
+            numbers_only.append(character)
+            
+    combined_value = numbers_only[0] + numbers_only[-1]
+        
+    # Add the two digit number to the global list
+    calibration_values.append(int(combined_value))
+    
+            
+def total_of_calibration_values(values_list, part):
+    """
+    Function used to generate the sum of values for the extracted calibrations
+    """
+    sum_total = 0
+    
+    for value in values_list:
+        sum_total += value
+    
+    print(f"The calibration values sum for part {part} is - {sum_total}")
 
 
 
@@ -52,7 +57,19 @@ def main():
     """
     Main function to runn all of the different sets of code
     """
-    pass
+    global calibration_values
+    
+    # Part 1 is addressed here
+    for content in data:
+        calibration_extractor(content)
+    
+    total_of_calibration_values(calibration_values, 'ONE')
+    
+    # Part 2 is addressed here
+
+    total_of_calibration_values(calibration_values, 'ONE')
+
+    
 
 
 

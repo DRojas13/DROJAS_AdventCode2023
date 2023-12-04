@@ -12,6 +12,13 @@
 # identified, then all of the values will need to be summed.
 # The sum value is the desired input for the puzzle.
 
+# PUZZLE PART 2 #
+
+# Puzzle understanding - In the alphanumeric text, there are numbers
+# in word form. These word forms will need to be identified and taken
+# into consideration when now creating the two digit calibration sets.
+# The sum value of the re-evaluated sets is now the output for the puzzle.
+
 # Variable collective
 calibration_values = list() # Target list for all of my extracted values
 part2_calibration_values = list() # Target list for extracted values for part 2

@@ -14,11 +14,17 @@
 
 # PUZZLE PART 2 #
 
-# Puzzle understanding - 
+# Puzzle understanding - The idea is to identify the minimum number of cubes
+# needed to make each game possible. Once the minimum number of cubes are ID'd,
+# the 'power' is calculated by multiplying the minimum of each color against one
+# another. All of the game powers are then summed together to provide the answer
+# to part 2 of the puzzle.
 
 
 # Variable Listing
 game_ids = list()
+game_powers = list()
+
 
 
 data_day_2 = open("Data_Files\Day2.txt", "r") # Opens the data file
@@ -50,10 +56,12 @@ def possible_games(game_num, game_sets):
     """
     Used to go through the different sets in a game
     and identify if the game as a whole is possible
+    Will provide the data to solve part 1.
     """
     
     global game_ids
     successful_game = True
+    
     
     def flagged_possible(number):
         if number in game_ids:
@@ -64,20 +72,39 @@ def possible_games(game_num, game_sets):
     for x in game_sets.values():
         if ('blue' in x) == True:
             if x['blue'] > 14:
-                print(f'BLUE - Fail in set {x}')
                 successful_game = False
         if ('red' in x) == True:
             if x['red'] > 12:
-                print(f'RED - Fail in set {x}')
                 successful_game = False
         if ('green' in x) == True:
             if x['green'] > 13:
-                print(f'GREEN - Fail in set {x}')
                 successful_game = False
     
     if successful_game == True:
         flagged_possible(game_num)
-                
+
+
+def power_of_game(game_set_data):
+    """
+    Used to calculate the minimum number of each color needed
+    for each game to be possible. Then multiply the max of each
+    color to get the power. The power will be added for all games.
+    Will provide data to solve part 2.
+    """
+    color_set = {'blue':0, 'red':0, 'green':0}
+        
+    
+    for x in game_set_data.values():
+        for color, amount in color_set.items():
+            if (color in x) == True:
+                if amount < x[color]:
+                    color_set[color] = x[color]
+
+    
+    game_power = color_set['blue'] * color_set['red'] * color_set['green']
+    game_powers.append(game_power)
+                    
+    
 
 
 def main(content):
@@ -89,16 +116,21 @@ def main(content):
     game_content = game_sets(content)
     # Check which games are possible
     possible_games(game_id, game_content)
-    # Add up the ID's of all the possible games
-    sum_game_ids = sum(game_ids)
-    print(sum_game_ids)
-    
-        
-        
+    # Calculate all game powers
+    power_of_game(game_content)
+
 
 
 if __name__ == "__main__":
     for game in data:
         main(game)
+        
+    # Add up the ID's of all the possible games
+    sum_game_ids = sum(game_ids)
+    # Add up the total of all game powers identified
+    sum_game_powers = sum(game_powers)
+    # Print solutions
+    print(f"Solution to part 1: {sum_game_ids}")
+    print(f"Solution to part 2: {sum_game_powers}")
 
     data_day_2.close()
